@@ -65,11 +65,15 @@ class Database
         //users table
         $query = "CREATE TABLE IF NOT EXISTS `users` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
-            `name` varchar(255) NOT NULL,
-            `email` int(100) NOT NULL,
-            `password` int(100) NOT NULL,
+            `firstname` varchar(50) NOT NULL,
+            `lastname` varchar(50) NOT NULL,
+            `email` varchar(100) NOT NULL,
+            `role` varchar(10) NOT NULL,
+            `password` varchar(100) NOT NULL,
+            `create_date` date NOT NULL,
             PRIMARY KEY (`id`),
-            KEY `name` (`name`),
+            KEY `firstname` (`firstname`),
+            KEY `lastname` (`lastname`),
             KEY `email` (`email`)
            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ";
 

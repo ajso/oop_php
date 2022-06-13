@@ -14,6 +14,7 @@ will hold the configurations of the system.
 define('APP_NAME', 'Udemy Clone');
 define('DESC', 'The best app ever.');
 
+
 // echo "<pre>";
 // print_r($_SERVER);
 
@@ -24,6 +25,7 @@ if($_SERVER['SERVER_NAME'] == 'localhost'){
     define('DB_PASSWORD', '');
     define('DB_DRIVER', 'mysql');
     define('DB_NAME', 'udemy_clone');
+    define('ROOT', 'http://localhost/phpworkspace/udemy/public');
 
 
 }else{
@@ -33,5 +35,6 @@ if($_SERVER['SERVER_NAME'] == 'localhost'){
     define('DB_PASSWORD', '');
     define('DB_DRIVER', 'mysql');
     define('DB_NAME', 'udemy_clone');
+    define('ROOT', 'http://localhost/phpworkspace/udemy/public');
 
 }

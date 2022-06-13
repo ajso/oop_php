@@ -11,7 +11,7 @@ class Home extends Controller{
     //this is the home page
     public function index(){
         // echo "Home Page";
-        $data['title'] = "Congragulation!! You now get it.";
+        $data['title'] = "UClone";
 
         $db = new Database();
         $db->create_tables();
