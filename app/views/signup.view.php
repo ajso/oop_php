@@ -66,62 +66,77 @@
                   <form class="row g-3 needs-validation" novalidate action="" method="POST">
                     <div class="col-6">
                       <label for="yourName" class="form-label">First Name</label>
-                      <input type="text" name="firstname" class="form-control" id="yourName" value="<?=setValue('firstname'); ?>" required1>
+                      <input type="text" name="firstname" class="form-control <?= !empty($errors['firstname']) ? 'border-danger' : ''; ?>" id="yourName" value="<?= setValue('firstname'); ?>" required>
                       <div class="invalid-feedback">Please, enter your name!</div>
+                      <?php if (!empty($errors['firstname'])) : ?>
+                        <small class=" text-danger"><?= $errors['firstname'] ?></small>
+                      <?php endif ?>
                     </div>
                     <div class="col-6">
                       <label for="yourName" class="form-label">Last Name</label>
-                      <input type="text" name="lastname" class="form-control" id="yourName" value="<?=setValue('lastname'); ?>" required1>
+                      <input type="text" name="lastname" class="form-control <?= !empty($errors['lastname']) ? 'border-danger' : ''; ?>" id="yourName" value="<?= setValue('lastname'); ?>" required>
                       <div class=" invalid-feedback">Please, enter your name!
+                      </div>
+                      <?php if (!empty($errors['lastname'])) : ?>
+                        <small class=" text-danger"><?= $errors['lastname'] ?></small>
+                      <?php endif ?>
                     </div>
-                </div>
 
-                <div class="col-12">
-                  <label for="yourEmail" class="form-label">Email</label>
-                  <input type="email" name="email" class="form-control <?=!empty($errors['email']) ? 'border-danger': ''; ?>" id="yourEmail" value="<?=setValue('email'); ?>" required1>
+                    <div class="col-12">
+                      <label for="yourEmail" class="form-label">Email</label>
+                      <input type="email" name="email" class="form-control <?= !empty($errors['email']) ? 'border-danger' : ''; ?>" id="yourEmail" value="<?= setValue('email'); ?>" required>
                       <div class=" invalid-feedback">Please enter a valid Email adddress!
+                      </div>
+                      <?php if (!empty($errors['email'])) : ?>
+                        <small class=" text-danger"><?= $errors['email'] ?></small>
+                      <?php endif ?>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control <?= !empty($errors['password']) ? 'border-danger' : ''; ?>" id="yourPassword" value="<?= setValue('password'); ?>" required>
+                      <div class=" invalid-feedback">Please enter your password!
+                      </div>
+                      <?php if (!empty($errors['password'])) : ?>
+                        <small class=" text-danger"><?= $errors['password'] ?></small>
+                      <?php endif ?>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label">Password Confirm</label>
+                      <input type="password" name="retype_password" class="form-control <?= !empty($errors['retype_password']) ? 'border-danger' : ''; ?>" id="retypePassword" value="<?= setValue('retype_password'); ?>" required>
+                      <div class=" invalid-feedback">Please enter your password!
+                      </div>
+                      <?php if (!empty($errors['retype_password'])) : ?>
+                        <small class=" text-danger"><?= $errors['retype_password'] ?></small>
+                      <?php endif ?>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input class="form-check-input <?= !empty($errors['terms']) ? 'border-danger' : ''; ?>" name="terms" type="checkbox" value="1" <?= setValue('terms') ? 'checked' : ''; ?> id="acceptTerms" required>
+                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
+                        <div class="invalid-feedback">You must agree before submitting.</div>
+                        <?php if (!empty($errors['terms'])) : ?>
+                          <small class=" text-danger"><?= $errors['terms'] ?></small>
+                        <?php endif ?>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                    </div>
+                    <div class="col-12">
+                      <p class="small mb-0">Already have an account? <a href="<?= ROOT ?>/login">Log in</a></p>
+                    </div>
+                  </form>
+
                 </div>
-                <?php if(!empty($errors['email'])): ?>
-                <small class=" text-danger"><?=$errors['email']?></small>
-                <?php endif ?>
-              </div>
-
-              <div class="col-12">
-                <label for="yourPassword" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" id="yourPassword" value="<?=setValue('password'); ?>" required1>
-                      <div class=" invalid-feedback">Please enter your password!
               </div>
             </div>
-
-            <div class="col-12">
-              <label for="yourPassword" class="form-label">Password Confirm</label>
-              <input type="password" name="retype_password" class="form-control" id="retypePassword" value="<?=setValue('retype_password'); ?>" required1>
-                      <div class=" invalid-feedback">Please enter your password!
-            </div>
           </div>
-
-          <div class="col-12">
-            <div class="form-check">
-              <input class="form-check-input" name="terms" type="checkbox" value="1" <?=setValue('terms') ? 'checked':''; ?> id="acceptTerms" required1>
-              <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
-              <div class="invalid-feedback">You must agree before submitting.</div>
-            </div>
-          </div>
-          <div class="col-12">
-            <button class="btn btn-primary w-100" type="submit">Create Account</button>
-          </div>
-          <div class="col-12">
-            <p class="small mb-0">Already have an account? <a href="<?= ROOT ?>/login">Log in</a></p>
-          </div>
-          </form>
-
         </div>
-    </div>
-    </div>
-    </div>
-    </div>
 
-    </section>
+      </section>
 
     </div>
   </main><!-- End #main -->

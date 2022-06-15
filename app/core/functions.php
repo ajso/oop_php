@@ -37,3 +37,32 @@ function secure_random_string($length){
     return $random_string;
     
 }
+
+//function to redirect.
+function redirect($link){
+    header("Location: ".ROOT. "/".$link);
+    die;
+}
+
+//function to show a massage to a user.
+function message($msg='', $erase=false){
+    //check if the message is not empty
+    if(!empty($msg)){
+
+        //save the message in the sessions
+        $_SESSION['massage'] = $msg;
+    }else{
+        if(!empty($_SESSION['massage'])){
+
+            $msg = $_SESSION['massage'];
+            
+            if($erase){
+                unset($_SESSION['massage']); //remove the msg
+            }
+            
+            return $msg; //show the msg
+            
+        }
+    }
+    return false;
+}

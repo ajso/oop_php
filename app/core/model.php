@@ -47,4 +47,23 @@ class Model extends Database{
             return false;
 
         }
+
+        //function to return only one item.
+        public function first($data){
+
+            $keys = array_keys($data);
+            $query = "SELECT *FROM ".$this->table ." WHERE ";
+            foreach ($keys as $key) {
+                $query .= $key . "=:" . $key . " && ";
+            }
+
+            $query = trim($query, "&& "); //removes the extra && and space.
+            $query .= " ORDER BY id DESC LIMIT 1"; //Add to the query
+            $res = $this->query($query, $data); //selects from the database with the where clause.
+            if(is_array($res)){
+                return $res[0]; //RETURN THE FIRST ITEM
+            }
+            return false;
+
+        }
 }

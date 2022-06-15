@@ -7,6 +7,8 @@ class App
     protected $controller = "_404"; //default in case no controller found.
     protected $method = "index"; //default method/function.
 
+    public static $page = "_404"; //to access
+
     //special function method __construct to automatically run when the app runs.
     function __construct()
     {  
@@ -20,6 +22,7 @@ class App
 
             require $filename;
             $this->controller = $arr[0]; //updating the controller from 404 to a new controller.
+            self::$page =$arr[0]; //accessing a static variable
             unset($arr[0]);
 
         } else {
