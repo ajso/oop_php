@@ -14,13 +14,19 @@ function show($stuff){
 
 }
 
-function setValue($key){
+function setValue($key, $default=''){
 
-    if(!empty($_POST[$key])){
-        return $_POST[$key];
+        if(!empty($_POST[$key])){ //first check if its a post
+            return $_POST[$key];
+        }else 
+        if(!empty($default)){
+        return $default;
     }
-    return "";
-}
+        return "";
+    }
+
+    
+
 
 function secure_random_string($length){
     //define an empty random string.
@@ -66,3 +72,27 @@ function message($msg='', $erase=false){
     }
     return false;
 }
+
+
+//function to clean the text from '` or "
+function esc($str){
+
+    return nl2br(htmlspecialchars($str));
+
+}
+
+//function to clean the url, i.e text slugs etc.
+function str_to_url($url)
+{
+
+   $url = str_replace("'", "", $url);
+   $url = preg_replace('~[^\\pL0-9_]+~u', '-', $url);
+   $url = trim($url, "-");
+   $url = iconv("utf-8", "us-ascii//TRANSLIT", $url);
+   $url = strtolower($url);
+   $url = preg_replace('~[^-a-z0-9_]+~', '', $url);
+   
+   return $url;
+}
+
+

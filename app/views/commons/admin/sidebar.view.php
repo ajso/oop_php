@@ -11,9 +11,30 @@
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="<?= ROOT ?>/admin/profile">
-                <i class="bi bi-person"></i>
-                <span>Profile</span>
+            <a class="nav-link collapsed" href="">
+                <i class="bi bi-cash-coin"></i>
+                <span>My Sales</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="">
+                <i class="bi bi-camera-reels"></i>
+                <span>My Courses</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="">
+                <i class="bi bi-clock-history"></i>
+                <span>Lesson History</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="">
+                <i class="bi bi-mortarboard"></i>
+                <span>Enrolled Courses</span>
             </a>
         </li>
 
