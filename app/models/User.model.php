@@ -11,12 +11,22 @@ class User extends Model
     protected $table = "users"; //database table variable.
     public $errors = []; // to hold the errors
     protected $allowedColumns = [
-                'firstname',
-                'lastname',
-                'email',
-                'role',
-                'password',
-                'create_date'];
+        'firstname',
+        'lastname',
+        'email',
+        'role',
+        'password',
+        'create_date',
+        //added while implementing the update profile page.
+        'bio',
+        'company',
+        'job',
+        'country',
+        'address',
+        'phone',
+        'img_url',
+        'slug_url',
+    ];
 
 
     //function to validate the inputs.
@@ -38,22 +48,22 @@ class User extends Model
         if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
 
             $this->errors["email"] = "Invalid email";
-        }else{
-            if($this->where(['email'=>$data["email"]])){
+        } else {
+            if ($this->where(['email' => $data["email"]])) {
 
                 $this->errors["email"] = "This email already exists";
             }
         }
-        
-        if(empty($data["password"])){
+
+        if (empty($data["password"])) {
 
             $this->errors["password"] = "password is required";
         }
-        if($data["password"] !== $data["retype_password"]){
+        if ($data["password"] !== $data["retype_password"]) {
 
             $this->errors["password"] = "Password do not match.";
         }
-        if(empty($data["terms"])){
+        if (empty($data["terms"])) {
 
             $this->errors["terms"] = "Accept the terms and conditions";
         }
@@ -64,6 +74,4 @@ class User extends Model
             return false;
         }
     }
-
-    
 }

@@ -118,10 +118,18 @@
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                       <div class="col-md-8 col-lg-9">
-                        <img src="<?=ROOT?>/niceadmin/assets/img/profile-img.jpg" alt="Profile">
+                        <div class="d-flex"> <!-- addition -->
+                        <img class="js-image-preview" src="<?=ROOT?>/niceadmin/assets/img/profile-img.jpg" style="width:200px; max-width: 200px; height:200px; object-fit:cover;" alt="Profile">
+                        <!-- js- div -->
+                        <div class="js-filename m-2"> Selected file: None
+
+
+                        </div>
+
+                        </div>
                         <div class="pt-2">
                           <label href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="text-white bi bi-upload"></i>
-                        <input type="file" name="image" style="display: none;"/></label>
+                        <input type="file" onchange="load_img(this.files[0])" name="image" style="display: none;"/></label>
                           <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
                         </div>
                       </div>
@@ -219,7 +227,8 @@
                     </div>
 
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary float-start">Cancel</button>
+                      <button type="submit" class="btn btn-primary float-end">Update Profile</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
 
@@ -316,5 +325,16 @@
               </div>
 
 <?php endif ?>
+
+<script>
+
+  function load_img(file){
+
+    document.querySelector(".js-filename").innerHTML = "Selected file: " + file.name; //grab the item at class .js-filename
+
+    var mylink = window.URL.createObjectURL(file); //create the link
+    document.querySelector(".js-image-preview").src = mylink; //grab the image
+  }
+</script>
 
   <?php $this->view('commons/admin/footer', $data); ?>

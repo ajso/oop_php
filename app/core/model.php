@@ -66,4 +66,37 @@ class Model extends Database{
             return false;
 
         }
+
+
+        //function to update database records.
+        public function update($id, $data){
+
+            //remove unwanted columns
+            if(!empty($this->allowedColumns)){
+
+                foreach($data as $key => $value){
+
+                    if(!in_array($key, $this->allowedColumns)){ //if the key is not in the allowed arrays.
+                        unset($data[$key]); //remove that key
+                    }
+
+                }
+            }
+            //show($data);
+            //if all removed constructa query.
+            $keys = array_keys($data); //returns only the keys of the input
+            
+            $query = "UPDATE " .$this->table." SET ";
+            foreach ($keys as $key) {
+                $query .= $key. "=:".$key.",";
+            }
+            $query = trim($query, ","); //removing the ',' at the end of the query.
+            $query .= " WHERE id=:id";
+            $data['id'] = $id;
+
+            // show($query);
+            // show($data); die;
+            $this->query($query, $data); //inserts into the database.
+
+        }
 }
