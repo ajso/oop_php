@@ -50,3 +50,7 @@
     </ul>
 
 </aside><!-- End Sidebar-->
+<main id="main" class="main">
+    <?php if (message()) : ?>
+        <div class="alert alert-success text-center"><?= message('', true) ?></div>
+    <?php endif ?>

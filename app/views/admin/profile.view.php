@@ -6,9 +6,7 @@
   <?php $this->view('commons/admin/nav', $data); ?>
 
   <?php $this->view('commons/admin/sidebar', $data); ?>
-
-  <main id="main" class="main">
-  <?php if(!empty($row)): ?>
+  <?php if (!empty($row)) : ?>
     <div class="pagetitle">
       <h1>Profile</h1>
       <nav>
@@ -16,7 +14,7 @@
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
           <li class="breadcrumb-item">Users</li>
           <li class="breadcrumb-item active">Profile</li>
-          <li class="breadcrumb-item active"><?=$row->firstname;?> <?=$row->lastname?></li>
+          <li class="breadcrumb-item active"><?= $row->slug_url; ?></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -28,9 +26,9 @@
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="<?=ROOT?>/niceadmin/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-              <h2><?=esc($row->firstname); ?> <?=esc(ucfirst(Auth::getLastname())) ?></h2>
-              <h3><?=esc(ucfirst($row->role)) ?></h3>
+              <img src="<?= ROOT ?>/<?= $row->img_url; ?>" style="width:150px; max-width:150px; height:150px;object-fit:cover;" alt="Profile" class="rounded-circle">
+              <h2><?= esc($row->firstname); ?> <?= esc(ucfirst(Auth::getLastname())) ?></h2>
+              <h3><?= esc(ucfirst($row->role)) ?></h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -50,19 +48,19 @@
               <ul class="nav nav-tabs nav-tabs-bordered">
 
                 <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                  <button class="nav-link active" onclick="set_tab(this.getAttribute('data-bs-target'))" data-bs-toggle="tab" id="profile-overview-tab" data-bs-target="#profile-overview">Overview</button>
                 </li>
 
                 <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                  <button class="nav-link" onclick="set_tab(this.getAttribute('data-bs-target'))" data-bs-toggle="tab" id="profile-edit-tab" data-bs-target="#profile-edit">Edit Profile</button>
                 </li>
 
                 <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>
+                  <button class="nav-link" onclick="set_tab(this.getAttribute('data-bs-target'))" data-bs-toggle="tab" id="profile-settings-tab" data-bs-target="#profile-settings">Settings</button>
                 </li>
 
                 <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                  <button class="nav-link" onclick="set_tab(this.getAttribute('data-bs-target'))" data-bs-toggle="tab" id="profile-change-password-tab" data-bs-target="#profile-change-password">Change Password</button>
                 </li>
 
               </ul>
@@ -70,43 +68,43 @@
 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                   <h5 class="card-title">About</h5>
-                  <p class="small fst-italic"><?=esc($row->bio);?></p>
+                  <p class="small fst-italic"><?= esc($row->bio); ?></p>
 
                   <h5 class="card-title">Profile Details</h5>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                    <div class="col-lg-9 col-md-8"><?=esc($row->firstname);?> <?=$row->lastname?></div>
+                    <div class="col-lg-9 col-md-8"><?= esc($row->firstname); ?> <?= $row->lastname ?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Company</div>
-                    <div class="col-lg-9 col-md-8"><?=esc($row->company);?></div>
+                    <div class="col-lg-9 col-md-8"><?= esc($row->company); ?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Job</div>
-                    <div class="col-lg-9 col-md-8"><?=esc($row->job);?></div>
+                    <div class="col-lg-9 col-md-8"><?= esc($row->job); ?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Country</div>
-                    <div class="col-lg-9 col-md-8"><?=esc($row->country);?></div>
+                    <div class="col-lg-9 col-md-8"><?= esc($row->country); ?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Address</div>
-                    <div class="col-lg-9 col-md-8"><?=esc($row->address);?></div>
+                    <div class="col-lg-9 col-md-8"><?= esc($row->address); ?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Phone</div>
-                    <div class="col-lg-9 col-md-8"><?=esc($row->phone);?></div>
+                    <div class="col-lg-9 col-md-8"><?= esc($row->phone); ?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8"><?=esc($row->email);?></div>
+                    <div class="col-lg-9 col-md-8"><?= esc($row->email); ?></div>
                   </div>
 
                 </div>
@@ -114,22 +112,23 @@
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-                  <form method="post">
+                  <form method="post" enctype="multipart/form-data">
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                       <div class="col-md-8 col-lg-9">
-                        <div class="d-flex"> <!-- addition -->
-                        <img class="js-image-preview" src="<?=ROOT?>/niceadmin/assets/img/profile-img.jpg" style="width:200px; max-width: 200px; height:200px; object-fit:cover;" alt="Profile">
-                        <!-- js- div -->
-                        <div class="js-filename m-2"> Selected file: None
+                        <div class="d-flex">
+                          <!-- addition -->
+                          <img class="js-image-preview" src="<?= ROOT ?>/<?= $row->img_url; ?>" style="width:200px; max-width: 200px; height:200px; object-fit:cover;" alt="Profile">
+                          <!-- js- div -->
+                          <div class="js-filename m-2"> Selected file: None
 
 
-                        </div>
+                          </div>
 
                         </div>
                         <div class="pt-2">
                           <label href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="text-white bi bi-upload"></i>
-                        <input type="file" onchange="load_img(this.files[0])" name="image" style="display: none;"/></label>
+                            <input type="file" onchange="load_img(this.files[0])" name="image" style="display: none;" /></label>
                           <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
                         </div>
                       </div>
@@ -138,96 +137,105 @@
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="firstname" type="text" class="form-control" id="fullName" value="<?=setValue('firstname',$row->firstname)?>">
+                        <input name="firstname" type="text" class="form-control" id="fullName" value="<?= setValue('firstname', $row->firstname) ?>">
+                        <?php if (!empty($errors['firstname'])) : ?>
+                          <small class=" text-danger"><?= $errors['firstname'] ?></small>
+                        <?php endif ?>
                       </div>
+
                     </div>
 
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="lastname" type="text" class="form-control" id="fullName" value="<?=setValue('lastname',$row->lastname)?>">
+                        <input name="lastname" type="text" class="form-control" id="lastName" value="<?= setValue('lastname', $row->lastname) ?>">
+                        <?php if (!empty($errors['lastname'])) : ?>
+                          <small class=" text-danger"><?= $errors['lastname'] ?></small>
+                        <?php endif ?>
                       </div>
+
                     </div>
 
                     <div class="row mb-3">
                       <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
                       <div class="col-md-8 col-lg-9">
-                        <textarea name="about" class="form-control" id="about" style="height: 100px"><?=setValue('about',$row->bio)?></textarea>
+                        <textarea name="about" class="form-control" id="about" style="height: 100px"><?= setValue('about', $row->bio) ?></textarea>
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="company" type="text" class="form-control" id="company" value="<?=setValue('company',$row->company)?>">
+                        <input name="company" type="text" class="form-control" id="company" value="<?= setValue('company', $row->company) ?>">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="job" type="text" class="form-control" id="Job" value="<?=setValue('job',$row->job)?>">
+                        <input name="job" type="text" class="form-control" id="Job" value="<?= setValue('job', $row->job) ?>">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="country" type="text" class="form-control" id="Country" value="<?=setValue('country',$row->country)?>">
+                        <input name="country" type="text" class="form-control" id="Country" value="<?= setValue('country', $row->country) ?>">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="address" type="text" class="form-control" id="Address" value="<?=setValue('address',$row->address)?>">
+                        <input name="address" type="text" class="form-control" id="Address" value="<?= setValue('address', $row->address) ?>">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="phone" type="text" class="form-control" id="Phone" value="<?=setValue('phone',$row->phone)?>">
+                        <input name="phone" type="text" class="form-control" id="Phone" value="<?= setValue('phone', $row->phone) ?>">
+
+                        <?php if (!empty($errors['phone'])) : ?>
+                          <small class=" text-danger"><?= $errors['phone'] ?></small>
+                        <?php endif ?>
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="Email" value="<?=setValue('email',$row->email)?>">
+                        <input name="email" type="email" class="form-control" id="Email" value="<?= setValue('email', $row->email) ?>">
                       </div>
+                      <?php if (!empty($errors['email'])) : ?>
+                        <small class=" text-danger"><?= $errors['email'] ?></small>
+                      <?php endif ?>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
+                        <input name="twitter_link" type="text" class="form-control" id="Twitter" value="<?= setValue('twitter_link', $row->twitter_link) ?>">
+                        <?php if (!empty($errors['twitter_link'])) : ?>
+                        <small class=" text-danger"><?= $errors['twitter_link'] ?></small>
+                      <?php endif ?>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-                      </div>
+                      
                     </div>
 
                     <div class="row mb-3">
                       <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
+                        <input name="linkedin_link" type="text" class="form-control" id="Linkedin" value="<?=setValue('linkedin_link', $row->linkedin_link) ?>">
+                        <?php if (!empty($errors['linkedin_link'])) : ?>
+                        <small class=" text-danger"><?= $errors['linkedin_link'] ?></small>
+                      <?php endif ?>
                       </div>
+                      
                     </div>
 
                     <div class="text-center">
-                    <button type="submit" class="btn btn-primary float-start">Cancel</button>
+                      <button type="submit" class="btn btn-primary float-start">Cancel</button>
                       <button type="submit" class="btn btn-primary float-end">Update Profile</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
@@ -317,24 +325,46 @@
       </div>
     </section>
 
-  </main><!-- End #main -->
-<?php else: ?>
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                This Profile was not found!!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
+    </main><!-- End #main -->
+  <?php else : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      This Profile was not found!!
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
-<?php endif ?>
+  <?php endif ?>
 
-<script>
+  <script>
+    var tab = sessionStorage.getItem("tab") ? sessionStorage.getItem("tab") : "#profile-overview";
 
-  function load_img(file){
+    function show_tab(tab_name) {
+      const someTabTriggerEl = document.querySelector(tab_name + "-tab");
+      const tab = new bootstrap.Tab(someTabTriggerEl);
 
-    document.querySelector(".js-filename").innerHTML = "Selected file: " + file.name; //grab the item at class .js-filename
+      tab.show();
 
-    var mylink = window.URL.createObjectURL(file); //create the link
-    document.querySelector(".js-image-preview").src = mylink; //grab the image
-  }
-</script>
+    }
+
+    function set_tab(tab_name) {
+      tab = tab_name;
+      sessionStorage.setItem("tab", tab_name);
+    }
+
+    function load_img(file) {
+
+      document.querySelector(".js-filename").innerHTML = "Selected file: " + file.name; //grab the item at class .js-filename
+
+      var mylink = window.URL.createObjectURL(file); //create the link
+      document.querySelector(".js-image-preview").src = mylink; //grab the image
+    }
+  </script>
+
+  <!-- will work when the window is loaded-->
+  <script>
+    window.onload = function() {
+
+      show_tab(tab);
+    }
+  </script>
 
   <?php $this->view('commons/admin/footer', $data); ?>
