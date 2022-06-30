@@ -217,22 +217,27 @@
                       <div class="col-md-8 col-lg-9">
                         <input name="twitter_link" type="text" class="form-control" id="Twitter" value="<?= setValue('twitter_link', $row->twitter_link) ?>">
                         <?php if (!empty($errors['twitter_link'])) : ?>
-                        <small class=" text-danger"><?= $errors['twitter_link'] ?></small>
-                      <?php endif ?>
+                          <small class=" text-danger"><?= $errors['twitter_link'] ?></small>
+                        <?php endif ?>
                       </div>
-                      
+
                     </div>
+
 
                     <div class="row mb-3">
                       <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="linkedin_link" type="text" class="form-control" id="Linkedin" value="<?=setValue('linkedin_link', $row->linkedin_link) ?>">
+                        <input name="linkedin_link" type="text" class="form-control" id="Linkedin" value="<?= setValue('linkedin_link', $row->linkedin_link) ?>">
                         <?php if (!empty($errors['linkedin_link'])) : ?>
-                        <small class=" text-danger"><?= $errors['linkedin_link'] ?></small>
-                      <?php endif ?>
+                          <small class=" text-danger"><?= $errors['linkedin_link'] ?></small>
+                        <?php endif ?>
                       </div>
-                      
+
                     </div>
+
+                    <!-- <div class="js-prog progress my-4 hide">
+                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Saving.. 50%</div>
+                    </div> -->
 
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary float-start">Cancel</button>
@@ -364,6 +369,56 @@
     window.onload = function() {
 
       show_tab(tab);
+    }
+
+    //upload functions
+    function save_profile() {
+      // var image = document.querySelector(".js-profile-image-input");
+      // send_data({
+      //   pic: image.files[0]
+      // });
+    }
+
+    //progress bar
+    function send_data(obj) {
+
+      // var prog = document.querySelector(".js-prog"); //progress bar
+      // prog.children[0].style.width = "0%";
+      // prog.classList.remove("hide"); // showing e
+
+      // var myform = new FormData(); //creating a virtual form
+      // for (key in obj) { //looping through an object
+      //   myform.append(key, obj[key]); //adding obj to a form
+      // }
+
+      // var ajax = new XMLHttpRequest();
+
+      // ajax.addEventListener('readystatechange', function() { //event listener
+
+      //   if (ajax.readyState == 4) { //state 4 is when everything is complete
+
+      //     if (ajax.status == 200) { //server status 'OK'
+      //       //everything went well
+      //       alert("upload complete");
+      //     } else {
+      //       //error
+      //       alert("an error occurred");
+      //     }
+      //   }
+      // });
+
+      //event listener to the upload object to the progress event
+      // ajax.upload.addEventListener('progress', function(e) {
+
+      //   var percent = Math.round((e.loaded / e.total) * 100); //progress values
+      //   prog.children[0].style.width = percent + "%"; //changing the style
+      //   prog.children[0].innerHTML = "Saving.. " + percent + "%";
+
+      // });
+
+      // ajax.open('post', '', true);
+      // ajax.send(myform); //sending the form
+
     }
   </script>
 

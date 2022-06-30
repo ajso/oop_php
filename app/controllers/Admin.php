@@ -58,6 +58,9 @@ class Admin extends Controller
                             //all good
                             $destination = $folder . time() . $_FILES['image']['name']; //destination
                             move_uploaded_file($_FILES['image']['tmp_name'], $destination); //move the image to the destination
+
+                            resize_image($destination); //implementing the file resize
+
                             $_POST['img_url'] = $destination;
                             //deleting a file if a new one is added.
                             if (file_exists($row->img_url)) { //if updated delete the previous image and replace with the new one.
