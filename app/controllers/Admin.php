@@ -77,6 +77,7 @@ class Admin extends Controller
                 $user->update($id, $_POST); // save to the DB
                 message("Profile Successfully Updated!!");
                 redirect('admin/profile/' . $id);
+                
             }
         }
          $data['errors'] = $user->errors; //display errors

@@ -1,4 +1,6 @@
-<?php $this->view('commons/admin/header', $data); ?>
+<?php
+// header("Refresh:3");
+$this->view('commons/admin/header', $data); ?>
 
 <body>
 
@@ -27,7 +29,7 @@
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
               <img src="<?= ROOT ?>/<?= $row->img_url; ?>" style="width:150px; max-width:150px; height:150px;object-fit:cover;" alt="Profile" class="rounded-circle">
-              <h2><?= esc($row->firstname); ?> <?= esc(ucfirst(Auth::getLastname())) ?></h2>
+              <h2><?= esc($row->firstname); ?> <?= esc($row->lastname) ?></h2>
               <h3><?= esc(ucfirst($row->role)) ?></h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -127,9 +129,10 @@
 
                         </div>
                         <div class="pt-2">
-                          <label href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="text-white bi bi-upload"></i>
-                            <input type="file" onchange="load_img(this.files[0])" name="image" style="display: none;" /></label>
-                          <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                          <label href="#" class="btn btn-primary btn-sm" title="Upload new profile image">
+                            <i class="text-white bi bi-upload"></i>
+                            <input class="js-profile-image-input" type="file" onchange="load_img(this.files[0])" name="image" style="display: none;" /></label>
+                          
                         </div>
                       </div>
                     </div>
@@ -235,13 +238,13 @@
 
                     </div>
 
-                    <!-- <div class="js-prog progress my-4 hide">
+                    <div class="js-prog progress my-4 hide">
                       <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Saving.. 50%</div>
-                    </div> -->
+                    </div>
 
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary float-start">Cancel</button>
-                      <button type="submit" class="btn btn-primary float-end">Update Profile</button>
+                      <!-- <button onclick="save_profile()" class="btn btn-primary float-start">Cancel</button> -->
+                      <button onclick="save_profile(event)" type="submit" class="btn btn-primary float-end">Update Profile</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
 
@@ -372,52 +375,95 @@
     }
 
     //upload functions
-    function save_profile() {
-      // var image = document.querySelector(".js-profile-image-input");
-      // send_data({
-      //   pic: image.files[0]
-      // });
+    function save_profile(e) {
+
+      //grabing form data
+      var form = e.currentTarget.form;
+      var inputs = form.querySelectorAll("input, textarea");
+      var obj ={};
+      var image_added = false;
+      //console.log(inputs);
+      for (var i = 0; i < inputs.length; i++) {
+        var key = inputs[i].name;
+
+        if(key == 'image'){
+          if(typeof inputs[i].files[0] == 'object'){
+            obj[key] = inputs[i].files[0];
+            image_added = true;
+          }
+          
+        }else{
+          obj[key] = inputs[i].value;
+        }       
+        
+      }
+
+      //setting up and validating the image
+      //var image = document.querySelector(".js-profile-image-input");
+
+      //validating an image.
+      if(image_added){
+          //files allowed
+        var allowed = ['jpg', 'jpeg', 'png'];
+        //check if an image exists
+        if(typeof obj.image == 'object'){
+          //get the file extension
+          var ext = obj.image.name.split(".").pop();
+        }
+
+        //if the ext is among the allowed
+        if(!allowed.includes(ext.toLowerCase())){
+          alert("Only the following file types allowed "+allowed.toString(","));
+          return;
+        }
+      }
+      
+
+      send_data(obj);
+
     }
 
     //progress bar
-    function send_data(obj) {
+    function send_data(obj, progbar='js-prog') {
 
-      // var prog = document.querySelector(".js-prog"); //progress bar
-      // prog.children[0].style.width = "0%";
-      // prog.classList.remove("hide"); // showing e
+      var prog = document.querySelector("." + progbar); //progress bar
+      prog.children[0].style.width = "0%";
+      prog.classList.remove("hide"); // showing e
 
-      // var myform = new FormData(); //creating a virtual form
-      // for (key in obj) { //looping through an object
-      //   myform.append(key, obj[key]); //adding obj to a form
-      // }
+      var myform = new FormData(); //creating a virtual form
+      for (key in obj) { //looping through an object
+        myform.append(key, obj[key]); //adding obj to a form
+      }
 
-      // var ajax = new XMLHttpRequest();
+      var ajax = new XMLHttpRequest();
 
-      // ajax.addEventListener('readystatechange', function() { //event listener
+      ajax.addEventListener('readystatechange', function() { //event listener
 
-      //   if (ajax.readyState == 4) { //state 4 is when everything is complete
+        if (ajax.readyState == 4) { //state 4 is when everything is complete
 
-      //     if (ajax.status == 200) { //server status 'OK'
-      //       //everything went well
-      //       alert("upload complete");
-      //     } else {
-      //       //error
-      //       alert("an error occurred");
-      //     }
-      //   }
-      // });
+          if (ajax.status == 200) { //server status 'OK'
+            //everything went well
+            //alert("upload complete");
+            //window.location.reload();
+            console.log(ajax.responseText);
+          } else {
+            //error
+            alert("an error occurred");
+          }
+        }
+      });
 
       //event listener to the upload object to the progress event
-      // ajax.upload.addEventListener('progress', function(e) {
+      ajax.upload.addEventListener('progress', function(e) {
 
-      //   var percent = Math.round((e.loaded / e.total) * 100); //progress values
-      //   prog.children[0].style.width = percent + "%"; //changing the style
-      //   prog.children[0].innerHTML = "Saving.. " + percent + "%";
+        var percent = Math.round((e.loaded / e.total) * 100); //progress values
+        prog.children[0].style.width = percent + "%"; //changing the style
+        prog.children[0].innerHTML = "Saving.. " + percent + "%";
 
-      // });
+      });
 
-      // ajax.open('post', '', true);
-      // ajax.send(myform); //sending the form
+      ajax.open('post', '', true);
+      ajax.send(myform); //sending the form
 
     }
   </script>
