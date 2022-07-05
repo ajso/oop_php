@@ -20,7 +20,7 @@ class Admin extends Controller
     }
 
 
-    //this is the profile page
+    //===============================================this is the profile page
     public function profile($id = null)
     {
 
@@ -37,8 +37,10 @@ class Admin extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && $row) {
 
             //check if an image exists. before uploading
-            //show($_FILES['image']); die;
+            //show($_POST); die;
+
             $folder = "uploads/images/";
+
             if (!file_exists($folder)) {
 
                 //if it doesn't exist create one.
@@ -73,15 +75,34 @@ class Admin extends Controller
                         $user->errors['image'] = "An error Occured while uploading image.";
                     }
                 }
+
+                //show($_POST); die;
                 //upload content.
                 $user->update($id, $_POST); // save to the DB
                 message("Profile Successfully Updated!!");
+
                 redirect('admin/profile/' . $id);
-                
             }
         }
-         $data['errors'] = $user->errors; //display errors
+
+        $data['errors'] = $user->errors; //display errors
         $this->view('admin/profile', $data);
-       
+    }
+    //=====================================End Profile===============
+
+    //====================================Courses Page================
+    public function courses($id=null){
+
+        //making sure a user is looged in
+        if (!Auth::logged_in()) {
+            message("Please login to access the admin section.");
+            redirect('login');
+        }
+
+        $data['title'] = "Courses";
+
+        //loading the page
+        $this->view('admin/courses', $data);
+
     }
 }

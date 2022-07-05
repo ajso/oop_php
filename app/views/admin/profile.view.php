@@ -162,7 +162,7 @@ $this->view('commons/admin/header', $data); ?>
                     <div class="row mb-3">
                       <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
                       <div class="col-md-8 col-lg-9">
-                        <textarea name="about" class="form-control" id="about" style="height: 100px"><?= setValue('about', $row->bio) ?></textarea>
+                        <textarea name="bio" class="form-control" id="about" style="height: 100px"><?= setValue('bio', $row->bio) ?></textarea>
                       </div>
                     </div>
 
@@ -244,7 +244,7 @@ $this->view('commons/admin/header', $data); ?>
 
                     <div class="text-center">
                       <!-- <button onclick="save_profile()" class="btn btn-primary float-start">Cancel</button> -->
-                      <button onclick="save_profile(event)" type="submit" class="btn btn-primary float-end">Update Profile</button>
+                      <button type="submit" class="btn btn-primary float-end">Update Profile</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
 
@@ -375,97 +375,116 @@ $this->view('commons/admin/header', $data); ?>
     }
 
     //upload functions
-    function save_profile(e) {
+  function save_profile(e)
+  {
 
-      //grabing form data
-      var form = e.currentTarget.form;
-      var inputs = form.querySelectorAll("input, textarea");
-      var obj ={};
-      var image_added = false;
-      //console.log(inputs);
-      for (var i = 0; i < inputs.length; i++) {
-        var key = inputs[i].name;
+    var form = e.currentTarget.form;
+    var inputs = form.querySelectorAll("input,textarea");
+    var obj = {};
+    var image_added = false;
 
-        if(key == 'image'){
-          if(typeof inputs[i].files[0] == 'object'){
-            obj[key] = inputs[i].files[0];
-            image_added = true;
-          }
-          
+    for (var i = 0; i < inputs.length; i++) {
+      var key = inputs[i].name;
+
+      if(key == 'image'){
+        if(typeof inputs[i].files[0] == 'object'){
+          obj[key] = inputs[i].files[0];
+          image_added = true;
+        }
+      }else{
+        obj[key] = inputs[i].value;
+      }
+    }
+ 
+    //validate image
+    if(image_added){
+
+      var allowed = ['jpg','jpeg','png'];
+      if(typeof obj.image == 'object'){
+        var ext = obj.image.name.split(".").pop();
+      }
+
+      if(!allowed.includes(ext.toLowerCase())){
+        alert("Only these file types are allowed in profile image: "+ allowed.toString(","));
+        return;
+      }
+    }
+
+    send_data(obj);
+
+  }
+
+  function send_data(obj, progbar = 'js-prog')
+  {
+
+    var prog = document.querySelector("."+progbar);
+    prog.children[0].style.width = "0%";
+    prog.classList.remove("hide");
+
+    var myform = new FormData();
+    for(key in obj){
+      myform.append(key,obj[key]); 
+    }
+
+    var ajax = new XMLHttpRequest();
+
+    ajax.addEventListener('readystatechange',function(){
+
+      if(ajax.readyState == 4){
+
+        if(ajax.status == 200){
+          //everything went well
+          //alert("upload complete");
+          handle_result(ajax.responseText);
         }else{
-          obj[key] = inputs[i].value;
-        }       
-        
-      }
-
-      //setting up and validating the image
-      //var image = document.querySelector(".js-profile-image-input");
-
-      //validating an image.
-      if(image_added){
-          //files allowed
-        var allowed = ['jpg', 'jpeg', 'png'];
-        //check if an image exists
-        if(typeof obj.image == 'object'){
-          //get the file extension
-          var ext = obj.image.name.split(".").pop();
-        }
-
-        //if the ext is among the allowed
-        if(!allowed.includes(ext.toLowerCase())){
-          alert("Only the following file types allowed "+allowed.toString(","));
-          return;
+          //error
+          alert("an error occurred");
         }
       }
-      
+    });
 
-      send_data(obj);
+    ajax.upload.addEventListener('progress',function(e){
 
+      var percent = Math.round((e.loaded / e.total) * 100);
+      prog.children[0].style.width = percent + "%";
+      prog.children[0].innerHTML = "Saving.. " + percent + "%";
+
+    });
+
+    ajax.open('post','',true);
+    ajax.send(myform);
+
+  }
+
+  function handle_result(result)
+  {
+    var obj = JSON.parse(result);
+    if(typeof obj == 'object'){
+      //object was created
+
+      if(typeof obj.errors == 'object')
+      {
+        //we have errors
+        display_errors(obj.errors);
+        alert("Please correct the errors on the page");
+      }else{
+        //save complete
+        alert("Profile saved successfully!");
+        window.location.reload();
+
+      }
     }
+  }
 
-    //progress bar
-    function send_data(obj, progbar='js-prog') {
+  function display_errors(errors){
 
-      var prog = document.querySelector("." + progbar); //progress bar
-      prog.children[0].style.width = "0%";
-      prog.classList.remove("hide"); // showing e
+    for(key in errors){
 
-      var myform = new FormData(); //creating a virtual form
-      for (key in obj) { //looping through an object
-        myform.append(key, obj[key]); //adding obj to a form
-      }
-
-      var ajax = new XMLHttpRequest();
-
-      ajax.addEventListener('readystatechange', function() { //event listener
-
-        if (ajax.readyState == 4) { //state 4 is when everything is complete
-
-          if (ajax.status == 200) { //server status 'OK'
-            //everything went well
-            //alert("upload complete");
-            //window.location.reload();
-            console.log(ajax.responseText);
-          } else {
-            //error
-            alert("an error occurred");
-          }
-        }
-      });
-
-      //event listener to the upload object to the progress event
-      ajax.upload.addEventListener('progress', function(e) {
-
-        var percent = Math.round((e.loaded / e.total) * 100); //progress values
-        prog.children[0].style.width = percent + "%"; //changing the style
-        prog.children[0].innerHTML = "Saving.. " + percent + "%";
-
-      });
-
-      ajax.open('post', '', true);
-      ajax.send(myform); //sending the form
-
+      console.log(".js-error-"+key);
+      document.querySelector(".js-error-firstname").innerHTML = errors[key];
     }
+  }
+  
   </script>
 
   <?php $this->view('commons/admin/footer', $data); ?>

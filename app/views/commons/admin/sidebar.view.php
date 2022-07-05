@@ -18,7 +18,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="">
+            <a class="nav-link collapsed" href="<?= ROOT ?>/admin/courses">
                 <i class="bi bi-camera-reels"></i>
                 <span>My Courses</span>
             </a>

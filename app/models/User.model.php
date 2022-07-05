@@ -27,7 +27,7 @@ class User extends Model
         'img_url',
         'slug_url',
         'twitter_link',
-        'linkedIn_link'
+        'linkedin_link'
     ];
 
 
