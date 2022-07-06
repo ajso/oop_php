@@ -91,7 +91,7 @@ class Admin extends Controller
     //=====================================End Profile===============
 
     //====================================Courses Page================
-    public function courses($id=null){
+    public function courses($action=null, $id=null){
 
         //making sure a user is looged in
         if (!Auth::logged_in()) {
