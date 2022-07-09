@@ -15,6 +15,7 @@ class SignUp extends Controller{
         // $es = secure_random_string(3);
         // show($es); die;
         if($_SERVER['REQUEST_METHOD'] == "POST"){
+
             if($user->validate($_POST)){
                 
                 
@@ -27,11 +28,11 @@ class SignUp extends Controller{
                 message("Account successfully created, Login.");
                 redirect('login');
              }
+             
         }
 
         $data['errors'] = $user->errors;
         //show($_POST);
-        // show($db);
         $this->view('signup', $data);
     }
 

@@ -31,7 +31,7 @@ class Model extends Database{
 
         //Where clause function.
         //$query = "SELECT *FROM users WHERE email=:email && id=:id LIMIT 1";
-        public function where($data){
+        public function where($data, $order='desc'){
 
             $keys = array_keys($data);
             $query = "SELECT *FROM ".$this->table ." WHERE ";
@@ -40,8 +40,19 @@ class Model extends Database{
             }
 
             $query = trim($query, "&& "); //removes the extra && and space.
+            $query .= " order by id $order"; //adding to the query
             $res = $this->query($query, $data); //selects from the database with the where clause.
             if(is_array($res)){
+
+                //implementting/ run the after select functions
+                if(property_exists($this, 'afterSelect')){
+
+                    foreach ($this->afterSelect as $func) { //values are the functions.
+                        # run the function.
+                        $res = $this->$func($res); 
+                    }
+                }
+
                 return $res;
             }
             return false;
@@ -49,7 +60,7 @@ class Model extends Database{
         }
 
         //function to return only one item.
-        public function first($data){
+        public function first($data, $order='desc'){
 
             $keys = array_keys($data);
             $query = "SELECT *FROM ".$this->table ." WHERE ";
@@ -58,9 +69,19 @@ class Model extends Database{
             }
 
             $query = trim($query, "&& "); //removes the extra && and space.
-            $query .= " ORDER BY id DESC LIMIT 1"; //Add to the query
+            $query .= " ORDER BY id $order LIMIT 1"; //Add to the query
             $res = $this->query($query, $data); //selects from the database with the where clause.
             if(is_array($res)){
+
+                
+                //implementting/ run the after select functions
+                if(property_exists($this, 'afterSelect')){
+
+                    foreach ($this->afterSelect as $func) { //values are the functions.
+                        # run the function.
+                        $res = $this->$func($res); 
+                    }
+                }
                 return $res[0]; //RETURN THE FIRST ITEM
             }
             return false;
@@ -97,6 +118,30 @@ class Model extends Database{
             // show($query);
             // show($data); die;
             $this->query($query, $data); //inserts into the database.
+
+        }
+
+
+        // Function to select all from the database.
+        public function findAll($order='desc'){
+
+            $query = "SELECT *FROM ".$this->table ." ORDER BY id $order ";
+            
+            $res = $this->query($query); //selects all from the database.
+            if(is_array($res)){
+
+                //implementting/ run the after select functions
+                if(property_exists($this, 'afterSelect')){
+
+                    foreach ($this->afterSelect as $func) { //values are the functions.
+                        # run the function.
+                        $res = $this->$func($res); 
+                    }
+                }
+                
+                return $res;
+            }
+            return false;
 
         }
 }

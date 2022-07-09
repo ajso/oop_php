@@ -26,6 +26,27 @@ function setValue($key, $default = '')
     return "";
 }
 
+//================for select option
+function setSelect($key,$value, $default = '')
+{
+
+    if (!empty($_POST[$key])) { //first check if its a post
+
+        //compare the value to the item in the post
+        if($value == $_POST[$key]){
+            return ' selected ';
+        }
+        
+    } else 
+        if (!empty($default)) {
+            //compare the value to the default value
+            if($value == $default){
+                return ' selected ';
+            }
+    }
+    return "";
+}
+
 
 
 
@@ -168,4 +189,9 @@ function resize_image($filename, $max_size = 700)
 
 
     return $filename;
+}
+
+//function to convert the date to a human readable value.
+function get_date($date){
+    return date("jS M, Y H:i:s a", strtotime($date));
 }

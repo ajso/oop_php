@@ -14,7 +14,6 @@ class Database
         //database connection. "mysql:hostname=localhost;dbname="dbname";
         $str = DB_DRIVER . ":hostname=" . DB_HOST . "; dbname=" . DB_NAME;
         return new PDO($str, DB_USER, DB_PASSWORD);
-
     }
 
     //prepare the query function. This function will do both read() and write()
@@ -22,10 +21,10 @@ class Database
     {
         //running the connect function.
         $conn = $this->connect();
-        
+
         // show($conn);
         $stmt = $conn->prepare($query);
-        
+
         //var_dump($stmt);
         //if the stmt is true
         if ($stmt) {
@@ -37,12 +36,12 @@ class Database
 
                 if ($type == 'object') {
 
-                     $type = PDO::FETCH_OBJ; //default reuturn type is an object.
-                     
-                }else{
-                    
+                    $type = PDO::FETCH_OBJ; //default reuturn type is an object.
+
+                } else {
+
                     $type = PDO::FETCH_ASSOC; //array return type
-                   
+
                 }
                 $result = $stmt->fetchAll($type); //fetch objects. instead of arrays.
 
@@ -110,6 +109,8 @@ class Database
             `course_promo_video` varchar(1024) DEFAULT NULL,
             `course_image` varchar(1024) DEFAULT NULL,
             `tags` varchar(255) DEFAULT NULL,
+            `approved` tinyint(4) NOT NULL DEFAULT 0,
+            `is_published` tinyint(4) NOT NULL DEFAULT 0,
             `date_created` datetime NOT NULL,
             PRIMARY KEY (`id`),
             KEY `title` (`title`),
@@ -118,9 +119,26 @@ class Database
             KEY `sub_category_id` (`sub_category_id`),
             KEY `level_id` (`level_id`),
             KEY `primary_subject` (`primary_subject`),
-            KEY `date_created` (`date_created`)
+            KEY `date_created` (`date_created`),
+            KEY `approved` (`approved`),
+            KEY `is_published` (`is_published`)
            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
            ";
+
+        // runn the query
+        $this->query($query);
+
+
+
+        //Categories table
+        $query = "CREATE TABLE `categories` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `category` varchar(100) NOT NULL,
+        `disabled` tinyint(4) NOT NULL DEFAULT 0,
+        PRIMARY KEY (`id`),
+        KEY `category` (`category`),
+        KEY `disabled` (`disabled`)
+       ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4";
 
         // runn the query
         $this->query($query);

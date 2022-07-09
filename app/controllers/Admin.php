@@ -91,7 +91,8 @@ class Admin extends Controller
     //=====================================End Profile===============
 
     //====================================Courses Page================
-    public function courses($action=null, $id=null){
+    public function courses($action = null, $id = null)
+    {
 
         //making sure a user is looged in
         if (!Auth::logged_in()) {
@@ -99,10 +100,54 @@ class Admin extends Controller
             redirect('login');
         }
 
+        $user_id = Auth::getId(); //logged user id
+        $course = new Course(); //intantiate the course model class
+        $data = [];
         $data['title'] = "Courses";
+        $data['id'] = $id;
+        $data['action'] = $action;
+
+        if ($action == 'add') {
+
+            
+            $category = new Category(); //intantiate the category model class
+
+            $data['categories'] = $category->findAll('asc'); //gets and populates all categories
+
+            //to submit inputs to the database. Is executed while adding to the database.
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                if ($course->validate($_POST)) {
+
+                    
+                    $_POST['date_created'] = date('Y-m-d H:i:s'); //date
+                    $_POST['user_id'] = $user_id; //logged user id
+                    $course->insert($_POST);
+
+                    //retrieve the last record inserted by this user
+                    $row = $course->first(['user_id' => $user_id, 'is_published' => 0]);
+                    message("Course is successfully created.");
+
+                    if ($row) { //if the row is not available
+                        redirect('admin/courses/edit/' . $row->id);
+                    } else {
+                        redirect('admin/courses');
+                    }
+                }
+//display errors if data is not validated.
+                $data['errors'] = $course->errors;
+
+            }
+        }else{ // courses view display
+
+            //========to read user entered courses from the database
+            $data['rows'] = $course->where(['user_id'=>$user_id]);
+
+            //show($data['rows']); die;
+
+        }
 
         //loading the page
         $this->view('admin/courses', $data);
-
     }
 }
