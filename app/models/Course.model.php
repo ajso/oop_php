@@ -21,7 +21,7 @@ class Course extends Model
         'get_level',
         'get_language',
 
- ];
+    ];
 
     //array of functions that will run before data processing.
     protected $beforeSelect = [];
@@ -61,6 +61,13 @@ class Course extends Model
             $this->errors["title"] = "title is required";
         } else if (!preg_match("/^[a-zA-Z \-\_\&\']+$/", trim($data['title']))) {
             $this->errors['title'] = "title can only have letters without spaces";
+        }
+
+        if (empty($data["primary_subject"])) {
+
+            $this->errors["primary_subject"] = "primary subject is required";
+        } else if (!preg_match("/^[a-zA-Z \-\_\&\']+$/", trim($data['primary_subject']))) {
+            $this->errors['primary_subject'] = "primary subject can only have letters without spaces";
         }
 
         if (empty($data["category_id"])) {
@@ -136,19 +143,17 @@ class Course extends Model
     {
         //instantiate the database for this purpose.
         $db = new Database();
-        if(!empty($rows[0]->category_id)){ //check if the id exists.
+        if (!empty($rows[0]->category_id)) { //check if the id exists.
 
             foreach ($rows as $key => $row) {
                 # code... Read from the database.
                 $query = "SELECT * FROM categories WHERE id=:id LIMIT 1";
-                $cat = $db->query($query, ['id'=>$row->category_id]); //returns and array of objects. $cat[0] returns the first item.
+                $cat = $db->query($query, ['id' => $row->category_id]); //returns and array of objects. $cat[0] returns the first item.
 
-                if(!empty($cat)){
+                if (!empty($cat)) {
                     $rows[$key]->category_id_row = $cat[0];
                 }
-
             }
-
         }
 
         return $rows;
@@ -158,27 +163,40 @@ class Course extends Model
     {
         //instantiate the database for this purpose.
         $db = new Database();
-        if(!empty($rows[0]->category_id)){ //check if the id exists.
+        if (!empty($rows[0]->user_id)) { //check if the id exists.
 
             foreach ($rows as $key => $row) {
                 # code... Read from the database.
                 $query = "SELECT id, firstname, lastname, role FROM users WHERE id=:id LIMIT 1";
-                $user = $db->query($query, ['id'=>$row->user_id]); //returns and array of objects. $cat[0] returns the first item.
+                $user = $db->query($query, ['id' => $row->user_id]); //returns and array of objects. $cat[0] returns the first item.
 
-                if(!empty($user)){
+                if (!empty($user)) {
 
-                    $user[0]->name = $user[0]->firstname.' '.$user[0]->lastname; //property 'name'
+                    $user[0]->name = $user[0]->firstname . ' ' . $user[0]->lastname; //property 'name'
                     $rows[$key]->user_id_row = $user[0];
                 }
-
             }
-
         }
 
         return $rows;
     }
     protected function get_price($rows)
-    {
+    { //instantiate the database for this purpose.
+        $db = new Database();
+        if (!empty($rows[0]->price_id)) { //check if the id exists.
+
+            foreach ($rows as $key => $row) {
+                # code... Read from the database.
+                $query = "SELECT *FROM prices WHERE id=:id LIMIT 1";
+                $price = $db->query($query, ['id' => $row->price_id]); //returns and array of objects. $cat[0] returns the first item.
+
+                if (!empty($price)) {
+
+                    $price[0]->name = $price[0]->price_name . ' ($' . $price[0]->actual_price . ')';
+                    $rows[$key]->price_id_row = $price[0];
+                }
+            }
+        }
 
         return $rows;
     }

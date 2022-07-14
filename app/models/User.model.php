@@ -36,6 +36,7 @@ class User extends Model
     {
 
         $this->errors = [];
+        
         //validate the inputs
         if (empty($data["firstname"])) {
 

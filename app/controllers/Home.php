@@ -14,7 +14,7 @@ class Home extends Controller{
         $data['title'] = "UClone";
 
         $db = new Database();
-        $db->create_tables();
+       // $db->create_tables();
         // show($db);
         $this->view('home', $data);
     }

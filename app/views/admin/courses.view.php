@@ -34,6 +34,13 @@
               <?php endif ?>
             </div>
 
+            <div class="col-md-12">
+              <input type="text" name="primary_subject" value="<?= setValue('primary_subject') ?>" class="form-control <?= !empty($errors['primary_subject']) ? 'border-danger' : ''; ?>" placeholder="Course Primary Subject e.g Videography">
+              <?php if (!empty($errors['primary_subject'])) : ?>
+                <small class=" text-danger"><?= $errors['primary_subject'] ?></small>
+              <?php endif ?>
+            </div>
+
 
             <div class="col-md-12">
               <select name="category_id" id="inputState" class="form-select form-control <?= !empty($errors['category_id']) ? 'border-danger' : ''; ?>">
@@ -90,13 +97,13 @@
               <tbody>
                 <?php foreach ($rows as $row) : ?>
                   <tr>
-                    <th scope="row"><?=$row->id;?></th>
-                    <td><?=esc($row->title);?></td>
-                    <td><?=esc($row->category_id_row->category ?? 'Unknown Category');?></td>
-                    <td><?=esc($row->price_id);?></td>
-                    <td><?=esc($row->primary_subject);?></td>
-                    <td><?=esc($row->user_id_row->name ?? 'Unknown User');?></td>
-                    <td><?=get_date($row->date_created);?></td>
+                    <th scope="row">32<?= $row->id; ?></th>
+                    <td><?= esc($row->title); ?></td>
+                    <td><?= esc($row->category_id_row->category ?? 'Unknown Category'); ?></td>
+                    <td><?= esc($row->price_id_row->name ?? 'Unknown Price'); ?></td>
+                    <td><?= esc($row->primary_subject ?? 'Unknown Subject'); ?></td>
+                    <td><?= esc($row->user_id_row->name ?? 'Unknown User'); ?></td>
+                    <td><?= get_date($row->date_created); ?></td>
                     <td>
                       <i class="bi bi-pencil-square"></i>
                       <i class="bi bi-trash"></i>
@@ -105,9 +112,9 @@
 
                 <?php endforeach; ?>
               </tbody>
-            <?php else: ?>
+            <?php else : ?>
               <tr>
-              <td colspan="10">No Record Found.</td>
+                <td colspan="10">No Record Found.</td>
               </tr>
             <?php endif; ?>
           </table>

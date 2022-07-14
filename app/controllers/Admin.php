@@ -122,6 +122,8 @@ class Admin extends Controller
                     
                     $_POST['date_created'] = date('Y-m-d H:i:s'); //date
                     $_POST['user_id'] = $user_id; //logged user id
+
+                    $_POST['price_id'] = 1;
                     $course->insert($_POST);
 
                     //retrieve the last record inserted by this user

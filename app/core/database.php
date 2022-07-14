@@ -62,7 +62,7 @@ class Database
         //store the statements
 
         //users table
-        $query = "CREATE TABLE `users` (
+        $query = "CREATE TABLE IF NOT EXISTS `users` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `firstname` varchar(50) NOT NULL,
             `lastname` varchar(50) NOT NULL,
@@ -92,7 +92,7 @@ class Database
 
 
         //courses table
-        $query = "CREATE TABLE `courses` (
+        $query = "CREATE TABLE IF NOT EXISTS `courses` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `title` varchar(100) NOT NULL,
             `description` text DEFAULT NULL,
@@ -131,7 +131,7 @@ class Database
 
 
         //Categories table
-        $query = "CREATE TABLE `categories` (
+        $query = "CREATE TABLE IF NOT EXISTS `categories` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `category` varchar(100) NOT NULL,
         `disabled` tinyint(4) NOT NULL DEFAULT 0,
@@ -139,6 +139,29 @@ class Database
         KEY `category` (`category`),
         KEY `disabled` (`disabled`)
        ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4";
+
+        // runn the query
+        $this->query($query);
+
+
+        //Price table
+        $query = "CREATE TABLE IF NOT EXISTS `prices` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `price_name` varchar(100) NOT NULL,
+        `price` decimal(10,0) NOT NULL,
+        `actual_price` decimal(10,0) NOT NULL,
+        `disabled` tinyint(1) NOT NULL DEFAULT 0,
+        `create_date` datetime NOT NULL,
+        PRIMARY KEY (`id`)
+       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+
+        // runn the query
+        $this->query($query);
+
+
+        //Insert into the prices table.
+        $query = "INSERT INTO `prices` (`id`, `price_name`, `price`, `actual_price`, `disabled`, `create_date`) VALUES
+(1, 'Free', '0', '0', 0, '2022-07-13 08:55:19')";
 
         // runn the query
         $this->query($query);
