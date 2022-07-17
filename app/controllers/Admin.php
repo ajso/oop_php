@@ -15,8 +15,13 @@ class Admin extends Controller
             message("Please login to access the admin section.");
             redirect('login');
         }
+
+        $user = new User();
+
+        //show($user); die;
         $data['title'] = "Administrator";
         $this->view('admin/dashboard', $data);
+
     }
 
 
@@ -33,6 +38,8 @@ class Admin extends Controller
         $id = $id ?? Auth::getId();
         $user = new User();
         $data['row'] = $row = $user->first(['id' => $id]); //return the required user 
+
+        //show($data); die;
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && $row) {
 

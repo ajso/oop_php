@@ -30,7 +30,6 @@ class Model extends Database{
         }
 
         //Where clause function.
-        //$query = "SELECT *FROM users WHERE email=:email && id=:id LIMIT 1";
         public function where($data, $order='desc'){
 
             $keys = array_keys($data);
