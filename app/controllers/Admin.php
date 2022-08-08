@@ -21,7 +21,6 @@ class Admin extends Controller
         //show($user); die;
         $data['title'] = "Administrator";
         $this->view('admin/dashboard', $data);
-
     }
 
 
@@ -58,7 +57,7 @@ class Admin extends Controller
 
 
             if ($user->edit_validate($_POST, $id)) { //validate the edited fields before submission
-
+                // show($_POST); die;
                 $allowedImgType = ['image/jpeg', 'image/png']; //allow image types
                 if (!empty($_FILES['image']['name'])) {
                     if ($_FILES['image']['error'] == 0) { //if there are no errors
@@ -83,7 +82,7 @@ class Admin extends Controller
                     }
                 }
 
-                //show($_POST); die;
+                show($_POST); die;
                 //upload content.
                 $user->update($id, $_POST); // save to the DB
                 message("Profile Successfully Updated!!");
@@ -116,7 +115,7 @@ class Admin extends Controller
 
         if ($action == 'add') {
 
-            
+
             $category = new Category(); //intantiate the category model class
 
             $data['categories'] = $category->findAll('asc'); //gets and populates all categories
@@ -126,7 +125,7 @@ class Admin extends Controller
 
                 if ($course->validate($_POST)) {
 
-                    
+
                     $_POST['date_created'] = date('Y-m-d H:i:s'); //date
                     $_POST['user_id'] = $user_id; //logged user id
 
@@ -143,14 +142,20 @@ class Admin extends Controller
                         redirect('admin/courses');
                     }
                 }
-//display errors if data is not validated.
+                //display errors if data is not validated.
                 $data['errors'] = $course->errors;
-
             }
-        }else{ // courses view display
+        } elseif ($action == 'edit') { //statement to implement the edit
+
+            //get course information
+            $data['row'] = $course->first(['user_id' => $user_id, 'id' => $id]); //1 record, course id created by the current user id.
+
+
+
+        } else { // courses view display
 
             //========to read user entered courses from the database
-            $data['rows'] = $course->where(['user_id'=>$user_id]);
+            $data['rows'] = $course->where(['user_id' => $user_id]);
 
             //show($data['rows']); die;
 

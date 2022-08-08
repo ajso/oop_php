@@ -123,8 +123,6 @@ $this->view('commons/admin/header', $data); ?>
                           <img class="js-image-preview" src="<?= ROOT ?>/<?= $row->img_url; ?>" style="width:200px; max-width: 200px; height:200px; object-fit:cover;" alt="Profile">
                           <!-- js- div -->
                           <div class="js-filename m-2"> Selected file: None
-
-
                           </div>
 
                         </div>
